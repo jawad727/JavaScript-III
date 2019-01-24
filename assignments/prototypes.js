@@ -8,20 +8,58 @@
   Each constructor function has unique properties and methods that are defined in their block comments below:
 */
   
+function GameObject(param) {
+  this.createdAt = param.createdAt;
+  this.dimensions = param.dimensions;
+  this.name = param.name;
+}
+
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from game`;
+}
+
+
 /*
-  === GameObject ===
+  === GameObject ===^^^
   * createdAt
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method -> returns the string: 'Object was removed from the game.'
 */
 
+
+function CharacterStats(stats) {
+  GameObject.call(this, stats);
+  this.healthPoints = stats.healthPoints;
+}
+
+CharacterStats.prototype = Object.create(GameObject.prototype)
+
+CharacterStats.prototype.takeDamage = function(){
+  return `${this.name} took damage`;
+}
+
+
 /*
-  === CharacterStats ===
+  === CharacterStats ===^^^
   * healthPoints
   * name
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+
+
+function Humanoid(human) {
+  CharacterStats.call(this, human);
+  this.team = human.team;
+  this.weapons = human.weapons;
+  this.language = human.language;
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype)
+
+  Humanoid.prototype.greet = function(){
+    return `${this.name} offers a greeting in ${this.language}`;
+  }
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,7 +70,7 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- 
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +79,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -92,6 +130,41 @@
     language: 'Elvish',
   });
 
+  const thanos = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 3,
+      height: 5,
+    },
+    healthPoints: 20,
+    name: 'Thanos',
+    team: 'Evil',
+    weapons: [
+      'Infinity gauntlet',
+      'Fists',
+    ],
+    language: 'English',
+  });
+
+  const superman = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 2,
+      height: 5,
+    },
+    healthPoints: 20,
+    name: 'Superman',
+    team: 'Good',
+    weapons: [
+      'Heat ray',
+      'Fists',
+      'Ice breath',
+    ],
+    language: 'English',
+  });
+
   console.log(mage.createdAt); // Today's date
   console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
   console.log(swordsman.healthPoints); // 15
@@ -102,9 +175,39 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+
+   
+function Villain(evil) {
+  Humanoid.call(this, evil);
+}
+
+Villain.prototype = Object.create(Humanoid.prototype)
+
+Humanoid.prototype.kick = function(){
+  return Math.random(-1,-2),1;
+}
+
+//------------------------------------------
+
+function Hero(good) {
+  Humanoid.call(this, good);
+}
+
+Hero.prototype = Object.create(Humanoid.prototype)
+
+Humanoid.prototype.punch = function(){
+  return Math.random(-1,-2),1;
+}
+
+Hero.prototype.fight = function(){
+  for (i = 0; this.healthPoints === 0 || evil.healthPoints === 0; i++){
+    
+  }
+}
